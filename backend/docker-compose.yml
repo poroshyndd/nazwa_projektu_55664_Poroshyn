@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres-krypto
+    environment:
+      POSTGRES_USER: kryptoadmin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: kryptodb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: krypto-app
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+
+volumes:
+  db_data:
